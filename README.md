@@ -1,4 +1,4 @@
-# Project_Codes
+# Concurrent Data Acquisition On-Board a Raspberry Pi
 
 ## Description
 
