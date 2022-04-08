@@ -4,11 +4,45 @@
 #include <time.h>
 #include <stdio.h>
 #include <vector>
+#include <numeric>
+#include <string>
 
 #define N 1000
 
 namespace plt = matplotlibcpp;
 
+// define a function to calculate the mean, variance and standard deviation of a vector
+void cal_func(std::vector<float> v, std::string str){
+    double mean = std::accumulate(v.begin(), v.end(), 0.0) / v.size();
+    std::vector<double> diff(v.size());
+    std::transform(v.begin(), v.end(), diff.begin(), std::bind2nd(std::minus<double>(), mean));
+    double var = std::inner_product(diff.begin(), diff.end(), diff.begin(), 0.0) / v.size();
+    double stdev = std::sqrt(var);
+    std::cout << str << "'s " << "mean: " << mean << ", variance: " << var << " and standard deviation: " << stdev << std::endl;
+
+}
+
+// define a function to plot a value vs sample figure for pressure, humidity and temperature sensors
+void plot_function1(std::vector<float> v, std::string str1, std::string str2){
+    plt::figure();
+    plt::plot(v);
+    plt::xlabel("Sample");
+    plt::ylabel("Value");
+    plt::title(str1);
+    plt::save(str2);
+}
+
+// // define a function to plot a value vs sample figure for the IMU chip
+void plot_function2(std::vector<float> v1, std::vector<float> v2, std::vector<float> v3, std::string str1, std::string str2){
+    plt::figure();
+    plt::plot(v1);
+    plt::plot(v2);
+    plt::plot(v3);
+    plt::xlabel("Sample");
+    plt::ylabel("Value");
+    plt::title(str1);
+    plt::save(str2);
+}
 
 int main(){
     // define a SenseHAT object
@@ -57,54 +91,22 @@ int main(){
         YAW.push_back(yaw);
     }
     
+    // compute the mean, variance and standard deviation of data
+
+    cal_func(p, "Pressure");
+    cal_func(t, "Temperature");
+    cal_func(h, "Humidity");
+    cal_func(XA, "Acceleration(x axis)");
+    cal_func(YA, "Acceleration(y axis)");
+    cal_func(ZA, "Acceleration(z axis)");
+
     // plot figures (value vs sample) to show the changes of each sensor's value
     
-    plt::figure();
-    plt::plot(p);
-    plt::xlabel("Sample");
-    plt::ylabel("Value");
-    plt::title("Pressure");
-    plt::save("value_p.png");
-    
-    plt::figure();
-    plt::plot(t);
-    plt::xlabel("Sample");
-    plt::ylabel("Value");
-    plt::title("Temperature");
-    plt::save("value_t.png");
-    
-    plt::figure();
-    plt::plot(h);
-    plt::xlabel("Sample");
-    plt::ylabel("Value");
-    plt::title("Humidity");
-    plt::save("value_h.png");
-    plt::figure();
-    
-    plt::plot(XA);
-    plt::plot(YA);
-    plt::plot(ZA);
-    plt::xlabel("Sample");
-    plt::ylabel("Value");
-    plt::title("Acceleration");
-    plt::save("value_a.png");
-    
-    plt::figure();
-    plt::plot(XM);
-    plt::plot(YM);
-    plt::plot(ZM);
-    plt::xlabel("Sample");
-    plt::ylabel("Value");
-    plt::title("Magnetisme");
-    plt::save("value_m.png");
-    
-    plt::figure();
-    plt::plot(PITCH);
-    plt::plot(ROLL);
-    plt::plot(YAW);
-    plt::xlabel("Sample");
-    plt::ylabel("Value");
-    plt::title("Orientation");
-    plt::save("value_o.png");
+    plot_function1(p, "Pressure", "value_p.png");
+    plot_function1(t, "Temperature", "value_t.png");
+    plot_function1(h, "Humidity", "value_h.png");
+    plot_function2(XA, YA, ZA, "Acceleration", "value_a.png");
+    plot_function2(XM, YM, ZM, "Magnetism", "value_m.png");
+    plot_function2(PITCH, ROLL, YAW, "Orientation", "value_o.png");
     
 }
