@@ -76,3 +76,16 @@ Compile the plot_value.cpp/plot_latency.cpp in the Plots folder:
 ```bash
 g++ plot_value.cpp/plot_latency.cpp -std=c++11 -I/usr/include/python2.7 -lpython2.7 -Wno-psabi -l SenseHat -l RTIMULib -lpthread -lraspicam -o plot_value/plot_latency
 ```
+
+## Test Result
+
+Run the main program in the Concurrent_Data_Acquisition and the result of it meets our expectations. I use all hardware to test.
+
+1. LED Matrix displays like a progress bar
+2. All sensors on the SenseHAT Board are initialized
+3. Print out the average value and collecting duration of sensors' data
+4. Save a image the raspberry pi camera captures
+
+## License
+
+[GNU General Public License, version 2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
