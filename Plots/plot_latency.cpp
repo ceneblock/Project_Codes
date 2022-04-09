@@ -163,11 +163,12 @@ std::vector<std::vector<double>> magnetisme(){
     return v;
 }
 
-// define a function to calculate the fetch latency, reuse latency and reuse duration of pressure and humidity sensors
+// define a function to calculate the fetch latency, reuse latency and reuse duration of all sensors
 void func(std::vector<std::vector<double>> vec){
     float temp = 0;
     double d = 0;
     std::vector<double> fl, rl, rd;
+    // determine which types of latency or duration each data belongs to
     for(int i=0; i<N1; i++){
         if(temp != vec[2][i]){
             temp = vec[2][i];
@@ -185,25 +186,14 @@ void func(std::vector<std::vector<double>> vec){
     printf("Fetch latency: %d, reuse latency: %d, reuse duration: %d\n", fetch_latency, reuse_latency, reuse_duration);
 }
 
-// define a function to calcculate the fetch latency, reuse latency and reuse duration of the IMU chip
-void func1(std::vector<std::vector<double>> vec){
-    float temp = 0;
-    double d = 0;
-    std::vector<double> fl, rl, rd;
-    for(int i=0; i<N1; i++){
-        if(vec[1][i] > 1000 && vec[1][i] < 3000){
-            fl.push_back(vec[1][i]);
-            rd.push_back(vec[0][i]-d-vec[1][i]);
-            d = vec[0][i];
-        }
-        else{
-            rl.push_back(vec[1][i]);
-        }
-    }
-    int fetch_latency = accumulate(fl.begin(), fl.end(), 0)/ fl.size();
-    int reuse_latency = accumulate(rl.begin(), rl.end(), 0) / rl.size();
-    int reuse_duration = accumulate(rd.begin(), rd.end(), 0) / (rd.size()-1);
-    printf("Fetch latency: %d, reuse latency: %d, reuse duration: %d\n", fetch_latency, reuse_latency, reuse_duration);
+// define a function to plot latency vs timeline figures
+void plot_func(std::vector<std::vector<double>> vec, std::string str1, std::string str2){
+    plt::plot(vec[0], vec[1]);
+    plt::xlabel("Timeline (us)");
+    plt::ylabel("Latency (us)");
+    plt::title(str1);
+    plt::save(str2);
+    plt::close();
 }
 
 int main(int argc, char *argv[]) {
@@ -212,62 +202,33 @@ int main(int argc, char *argv[]) {
     // plot figures (latency vs timeline) for each type of data
 
     vec1 = pression();
-    printf("Pression:\n");
+    printf("Pressure:\n");
     func(vec1);      
-    plt::plot(vec1[0], vec1[1]);
-    plt::xlabel("Timeline (us)");
-    plt::ylabel("Latency (us)");
-    plt::title("Pression");
-    plt::save("p_latency.png");
-    plt::close();
+    plot_func(vec1, "Pressure", "p_latency.png");
     
     vec2 = temperature();
     printf("Temperature:\n");
-    func1(vec2);
-    plt::plot(vec2[0], vec2[1]);
-    plt::xlabel("Timeline (us)");
-    plt::ylabel("Latency (us)");
-    plt::title("Temperature");
-    plt::save("t_latency.png");
-    plt::close();
+    func(vec2);
+    plot_func(vec2, "Temperature", "t_latency.png");
 
     vec3 = humidite();
     printf("Humidity:\n");
     func(vec3);
-    plt::plot(vec3[0], vec3[1]);
-    plt::xlabel("Timeline (us)");
-    plt::ylabel("Latency (us)");
-    plt::title("Humidity");
-    plt::save("h_latency.png");
-    plt::close();
+    plot_func(vec3, "Humidity", "h_latency.png");
 
     vec4 = orientation();
     printf("Orientation:\n");
     func(vec4);
-    plt::plot(vec4[0], vec4[1]);
-    plt::xlabel("Timeline (us)");
-    plt::ylabel("Latency (us)");
-    plt::title("Orientation");
-    plt::save("o_latency.png");
-    plt::close();
+    plot_func(vec4, "Orientation", "o_latency.png");
 
     vec5 = acceleration();
     printf("Acceleration:\n");
     func(vec5);
-    plt::plot(vec5[0], vec5[1]);
-    plt::xlabel("Timeline (us)");
-    plt::ylabel("Latency (us)");
-    plt::title("Acceleration");
-    plt::save("a_latency.png");
-    plt::close();
+    plot_func(vec5, "Acceleration", "a_latency.png");
 
     vec6 = magnetisme();
     printf("Magnetisme:\n");
     func(vec6);
-    plt::plot(vec6[0], vec6[1]);
-    plt::xlabel("Timeline (us)");
-    plt::ylabel("Latency (us)");
-    plt::title("Magnetisme");
-    plt::save("m_latency.png");
+    plot_func(vec6, "Magnetism", "m_latency.png");
     
 }
