@@ -1,3 +1,5 @@
+// define functions to print the value of collected data and collecting duration
+
 void print_pression(){
 	if(v[0] == 1){
 		float p(0), ts(0);

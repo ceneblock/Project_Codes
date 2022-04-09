@@ -1,6 +1,11 @@
+// initialize a mutex and a SenseHat object
 mutex m;
 SenseHat sh;
+
+// set the number of collection for each type of data
 int num = 10;
+
+// declare variables to store data and collecting duration
 float t,h,p,xm,ym,zm,xa,ya,za,pitch,roll,yaw;
 struct timeval t_start, t_end;
 struct timeval pt_start, pt_end;
@@ -11,11 +16,14 @@ data<float, 4> d3 = {(size_t)num};
 data<float, 4> d4 = {(size_t)num};
 data<float, 4> d5 = {(size_t)num};
 
+// define a function to calculate the duration
 float timestamp(struct timeval t_start, struct timeval t_end){
 	float result;
 	result = (t_end.tv_sec-t_start.tv_sec)*1000000 + t_end.tv_usec - t_start.tv_usec;
 	return result;
 }
+
+// define functions to collect data from different sensors
 
 void collect_pression(int i){
 	gettimeofday(&t_start, NULL);
@@ -71,6 +79,7 @@ void collect_magnetisme(int i){
 	d5.data_[i][3] = timestamp(t_start, t_end);
 }
 
+// define a function to execute collecting functions using the functioon pointer
 void mainFcn (void (*collectFcn)(int i)){
 	for (int i=0; i<num; i++){
 		unique_lock<mutex> lck(m);

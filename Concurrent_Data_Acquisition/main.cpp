@@ -78,7 +78,7 @@ int main(){
 		}	
 	}
 	
-	// create threads to make all functions that are used for processing run concurrently. 
+	// create threads to print results concurrently and it's better to use vector<thread> like below
 	thread th0(print_pression);
 	thread th1(print_temperature);
 	thread th2(print_humidity);
@@ -86,7 +86,7 @@ int main(){
 	thread th4(print_acceleration);
 	thread th5(print_magnetisme);
 
-    // join them to avoid premature termination of the program
+    // join them to avoid termination of the program
 	th0.join();
 	th1.join();
 	th2.join();

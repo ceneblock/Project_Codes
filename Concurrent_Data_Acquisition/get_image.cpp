@@ -1,3 +1,5 @@
+// define a function to capture images using the RaspiCam library
+
 int get_image(){
 	//open camera object
     raspicam::RaspiCam Camera; 

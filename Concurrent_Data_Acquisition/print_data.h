@@ -1,6 +1,8 @@
 #ifndef PRINT_H
 #define PRINT_H
 
+// declare functions to print out the collected data
+
 void print_pression();
 
 void print_temperature();
