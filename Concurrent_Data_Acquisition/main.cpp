@@ -10,14 +10,12 @@
 #include <ctime>
 #include <cstddef>
 #include <new>
-#include <raspicam/raspicam.h>
 #include <thread>
 
 // include all .cpp and .h files
 #include "sensor_config.h"
 #include "collect_data.h"
 #include "print_data.h"
-#include "get_image.h"
 using namespace std;
 
 
@@ -94,8 +92,4 @@ int main(){
 	th4.join();
 	th5.join();
 	
-	// capture a image using the Raspberry Pi camera
-    if (get_image() == -1){
-		cout << "Get image failed" << endl;    
-    }
 }

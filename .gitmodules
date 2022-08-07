@@ -1,0 +1,6 @@
+[submodule "SenseHat"]
+	path = SenseHat
+	url = https://github.com/PhilippeSimier/SenseHat.git
+[submodule "RTIMULib"]
+	path = RTIMULib
+	url = https://github.com/RPi-Distro/RTIMULib.git
