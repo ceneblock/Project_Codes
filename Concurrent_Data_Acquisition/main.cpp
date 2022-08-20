@@ -1,39 +1,14 @@
-#include <stdio.h>
-#include <unistd.h>
 #include <vector>
-#include <string>
-#include <fstream>
-#include <iostream>
 #include <SenseHat.h>
-#include <time.h>
 #include <mutex>
-#include <ctime>
-#include <cstddef>
-#include <new>
 #include <thread>
-
-// include all .cpp and .h files
-#include "sensor_config.h"
-#include "collect_data.h"
-#include "print_data.h"
-using namespace std;
-
-
-#ifdef CONFIG_H
-#include "sensor_config.cpp"
-#endif
-#ifdef COLLECT_H
-#include "collect_data.cpp"
-#endif
-#ifdef PRINT_H
-#include "print_data.cpp"
-#endif
-#ifdef IMAGE_H
-#include "get_image.cpp"
-#endif
+#include "sensors.h"
 
 int main(){
-	// let the LED Matrix looks like a progress bar
+  // initialize a mutex and a SenseHat object
+  std::mutex m;
+  SenseHat sh;
+  // let the LED Matrix looks like a progress bar
 	sh.Effacer(); 
     COULEUR vert  = sh.ConvertirRGB565("#009900");
     COULEUR rouge = sh.ConvertirRGB565(255,0,0);
@@ -45,9 +20,7 @@ int main(){
 		sleep(1);
     }
 	
-    // read the configurable information from a file to a vector
-    v = config();
-    vector<thread> vth;
+    /*
 	
     // determine which sensors should be used and create threads to run their collecting functions using the funcction pointer
 	if(v[0] == 1){
@@ -91,5 +64,5 @@ int main(){
 	th3.join();
 	th4.join();
 	th5.join();
-	
+	*/
 }
