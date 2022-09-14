@@ -6,23 +6,14 @@
 
 int main(){
   // initialize a mutex and a SenseHat object
-  std::mutex m;
-  SenseHat sh;
   // let the LED Matrix looks like a progress bar
-	sh.Effacer(); 
-    COULEUR vert  = sh.ConvertirRGB565("#009900");
-    COULEUR rouge = sh.ConvertirRGB565(255,0,0);
-
-    for (int i=0; i<8; i++){
-		sh.AllumerPixel(1, i, BLEU);
-		sh.AllumerPixel(0, i, rouge);
-		sh.AllumerPixel(2, i, vert);
-		sleep(1);
-    }
+  
+  Sensors::GetInstance("config.txt")->test();
+  Sensors::GetInstance("config.txt")->run();
+  //sensors.test();  
 	
-    /*
-	
-    // determine which sensors should be used and create threads to run their collecting functions using the funcction pointer
+  /*	
+  // determine which sensors should be used and create threads to run their collecting functions using the funcction pointer
 	if(v[0] == 1){
 		vth.push_back(thread(mainFcn, collect_pression));
 	}
@@ -48,7 +39,6 @@ int main(){
 			th.join();
 		}	
 	}
-	
 	// create threads to print results concurrently and it's better to use vector<thread> like below
 	thread th0(print_pression);
 	thread th1(print_temperature);
@@ -64,5 +54,5 @@ int main(){
 	th3.join();
 	th4.join();
 	th5.join();
-	*/
+  */
 }
